@@ -7,7 +7,4 @@ export default defineConfig({
   build: {
     outDir: "dist", // Çıkış klasörünü ayarlayın
   },
-  server: {
-    port: 3000, // Local sunucunuz için özel bir port
-  },
 });
