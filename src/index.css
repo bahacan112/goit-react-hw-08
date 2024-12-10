@@ -1,0 +1,25 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+}
+
+.layout {
+  min-height: 100vh;
+}
+
+.content {
+  padding: 24px;
+  background: white;
+  min-height: 80vh;
+}
+
+.footer {
+  text-align: center;
+}

@@ -1,0 +1,16 @@
+.layout {
+  min-height: 100vh;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #001529;
+}
+.content {
+  padding: 24px;
+  background: var(--ant-layout-body-background);
+}
+.footer {
+  text-align: center;
+}

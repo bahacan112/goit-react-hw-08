@@ -1,0 +1,12 @@
+.usermenu {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: space-between;
+  color: white;
+}
+
+.username {
+  font-weight: bold;
+  margin-right: 8px;
+}
