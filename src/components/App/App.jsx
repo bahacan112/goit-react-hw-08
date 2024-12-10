@@ -4,12 +4,12 @@ import { Routes, Route } from "react-router-dom";
 import { ConfigProvider, theme } from "antd";
 
 import { refreshUser } from "../../redux/auth/operations";
-import { selectIsRefreshing } from "../../redux/auth/selector";
+import { selectIsRefreshing } from "../../redux/auth/selectors";
 import Layout from "../Layout/Layout";
-import Home from "../../pages/Home/Home";
-import Login from "../../pages/Login/Login";
-import Registration from "../../pages/Registration/Registration";
-import Contacts from "../../pages/Contacts/Contacts";
+import Home from "../../pages/HomePage/HomePage";
+import Login from "../../pages/LoginPage/LoginPage";
+import Registration from "../../pages/RegistrationPage/RegistrationPage";
+import Contacts from "../../pages/ContactsPage/ContactsPage";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
 import RestrictedRoute from "../RestrictedRoute/RestrictedRoute";
 
@@ -47,20 +47,26 @@ function App() {
             element={
               <RestrictedRoute
                 redirectTo="/contacts"
-                component={<Registration />}
+                component={Registration} // JSX element kaldırıldı
               />
             }
           />
           <Route
             path="/login"
             element={
-              <RestrictedRoute redirectTo="/contacts" component={<Login />} />
+              <RestrictedRoute
+                redirectTo="/contacts"
+                component={Login} // JSX element kaldırıldı
+              />
             }
           />
           <Route
             path="/contacts"
             element={
-              <PrivateRoute redirectTo="/login" component={<Contacts />} />
+              <PrivateRoute
+                redirectTo="/login"
+                component={Contacts} // JSX element kaldırıldı
+              />
             }
           />
         </Routes>

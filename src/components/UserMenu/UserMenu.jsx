@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { logOut } from "../../redux/auth/operations";
-import { selectUser } from "../../redux/auth/selector";
+import { selectUser } from "../../redux/auth/selectors";
 import { Button } from "antd";
 import styles from "./UserMenu.module.css";
 

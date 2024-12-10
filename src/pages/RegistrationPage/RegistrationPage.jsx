@@ -1,7 +1,7 @@
 // src/pages/Registration/Registration.jsx
 import RegistrationForm from "../../components/RegistrationForm/RegistrationForm";
 import { Card, Typography } from "antd";
-import styles from "./Registration.module.css";
+import styles from "./RegistrationPage.module.css";
 
 const { Title } = Typography;
 

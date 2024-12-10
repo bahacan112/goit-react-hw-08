@@ -1,5 +1,5 @@
 import LoginForm from "../../components/LoginForm/LoginForm";
-import styles from "./Login.module.css";
+import styles from "./LoginPage.module.css";
 import { Card, Typography } from "antd";
 function Login() {
   const { Title } = Typography;

@@ -2,12 +2,17 @@ import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { message } from "antd";
 
-axios.defaults.baseURL = "https://connections-api.goit.global";
+// Axios Örneği Oluşturma
+const api = axios.create({
+  baseURL: "https://connections-api.goit.global",
+});
 
-// Yardımcı fonksiyon: Token set etme
+// Yardımcı Fonksiyonlar
 const setAuthHeader = (token) => {
-  axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+  api.defaults.headers.common.Authorization = `Bearer ${token}`;
 };
+
+// **Asenkron İşlemler**
 
 // Kişileri Getir
 export const fetchContacts = createAsyncThunk(
@@ -23,7 +28,7 @@ export const fetchContacts = createAsyncThunk(
     setAuthHeader(token);
 
     try {
-      const { data } = await axios.get("/contacts");
+      const { data } = await api.get("/contacts");
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -45,7 +50,7 @@ export const addContact = createAsyncThunk(
     setAuthHeader(token);
 
     try {
-      const { data } = await axios.post("/contacts", contact);
+      const { data } = await api.post("/contacts", contact);
       message.success("Kişi başarıyla eklendi!");
       return data;
     } catch (error) {
@@ -60,12 +65,15 @@ export const deleteContact = createAsyncThunk(
   "contacts/deleteContact",
   async (id, { rejectWithValue, getState }) => {
     const token = getState().auth.token;
-    if (!token) return rejectWithValue("No token, please authenticate.");
+
+    if (!token) {
+      return rejectWithValue("No token, please authenticate.");
+    }
 
     setAuthHeader(token);
 
     try {
-      await axios.delete(`/contacts/${id}`);
+      await api.delete(`/contacts/${id}`);
       message.success("Kişi başarıyla silindi!");
       return id;
     } catch (error) {
@@ -75,17 +83,20 @@ export const deleteContact = createAsyncThunk(
   }
 );
 
-// Kişi Düzenle (Güncelle)
+// Kişi Güncelle
 export const editContact = createAsyncThunk(
   "contacts/edit",
   async ({ id, ...updateFields }, { rejectWithValue, getState }) => {
     const token = getState().auth.token;
-    if (!token) return rejectWithValue("No token, please authenticate.");
+
+    if (!token) {
+      return rejectWithValue("No token, please authenticate.");
+    }
 
     setAuthHeader(token);
 
     try {
-      const { data } = await axios.patch(`/contacts/${id}`, updateFields);
+      const { data } = await api.patch(`/contacts/${id}`, updateFields);
       message.success("Kişi başarıyla güncellendi!");
       return data;
     } catch (error) {

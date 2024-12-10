@@ -2,14 +2,25 @@ import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { message } from "antd";
 
+// Axios Temel URL Ayarı
 axios.defaults.baseURL = "https://connections-api.goit.global";
 
-// Kayıt ol
+// Yetkilendirme Başlıkları İçin Yardımcı Fonksiyonlar
+const setAuthHeader = (token) => {
+  axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+};
+
+const clearAuthHeader = () => {
+  delete axios.defaults.headers.common.Authorization;
+};
+
+// Kayıt Olma İşlemi
 export const register = createAsyncThunk(
   "auth/register",
   async (credentials, thunkAPI) => {
     try {
       const { data } = await axios.post("/users/signup", credentials);
+      setAuthHeader(data.token); // Yetkilendirme Başlığı Ayarı
       message.success("Kayıt başarılı! Sisteme giriş yapılıyor...");
       return data;
     } catch (error) {
@@ -19,12 +30,13 @@ export const register = createAsyncThunk(
   }
 );
 
-// Giriş yap
+// Giriş Yapma İşlemi
 export const login = createAsyncThunk(
   "auth/login",
   async (credentials, thunkAPI) => {
     try {
       const { data } = await axios.post("/users/login", credentials);
+      setAuthHeader(data.token); // Yetkilendirme Başlığı Ayarı
       message.success("Giriş başarılı! Yönlendiriliyorsunuz...");
       return data;
     } catch (error) {
@@ -34,10 +46,11 @@ export const login = createAsyncThunk(
   }
 );
 
-// Çıkış yap
+// Çıkış Yapma İşlemi
 export const logOut = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
   try {
     await axios.post("/users/logout");
+    clearAuthHeader(); // Yetkilendirme Başlığını Temizle
     message.success("Başarıyla çıkış yaptınız!");
     return;
   } catch (error) {
@@ -46,22 +59,23 @@ export const logOut = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
   }
 });
 
-// Kullanıcı verilerini token ile yenile
+// Kullanıcı Verilerini Yenileme İşlemi
 export const refreshUser = createAsyncThunk(
   "auth/refresh",
   async (_, thunkAPI) => {
     const state = thunkAPI.getState();
     const token = state.auth.token;
+
     if (!token) {
-      // Token yoksa hata döndürür, message göstermeye gerek yok
+      // Token yoksa hata döndürür
       return thunkAPI.rejectWithValue("No token");
     }
+
     try {
-      axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+      setAuthHeader(token); // Yetkilendirme Başlığı Ayarı
       const { data } = await axios.get("/users/current");
       return data;
     } catch (error) {
-      // Hata durumunda opsiyonel olarak message ile kullanıcıya bildirim yapılabilir.
       message.error("Kullanıcı verileri yenilenemedi!");
       return thunkAPI.rejectWithValue(error.message);
     }
